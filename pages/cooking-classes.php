@@ -47,14 +47,17 @@ if (isset($_POST["request"])) {
   }
 
 
-  // TODO: 6. Validate that the email is not empty (email is required)
+  //6. Validate that the email is not empty (email is required)
   // Note: Do not validate email format.
   //       For project 2 only validate, required or not required.
+  if($form_values["email"] == ""){
+    $form_valid = false;
+    $feedback_css_classes["email"] = "";
+  }
 
-  if (false /* TODO: 7. If the form is valid, show confirmation message. Otherwise, set sticky values */) {
-    // TODO: 8. show confirmation message
-  } else {
-    // form was not valid, set sticky values
+  if($form_valid){
+    $show_confirmation_message = true;
+  } esle {
     $sticky_values["course-vegetarian"] = ($form_values["course-vegetarian"] ? 'checked' : "");
     $sticky_values["course-sauces"] = ($form_values["course-sauces"] ? 'checked' : "");
     $sticky_values["email"] = $form_values["email"];
