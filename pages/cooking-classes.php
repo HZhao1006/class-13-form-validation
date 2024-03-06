@@ -57,7 +57,7 @@ if (isset($_POST["request"])) {
 
   if($form_valid){
     $show_confirmation_message = true;
-  } esle {
+  } else{
     $sticky_values["course-vegetarian"] = ($form_values["course-vegetarian"] ? 'checked' : "");
     $sticky_values["course-sauces"] = ($form_values["course-sauces"] ? 'checked' : "");
     $sticky_values["email"] = $form_values["email"];
