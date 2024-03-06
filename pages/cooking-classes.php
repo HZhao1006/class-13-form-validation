@@ -3,8 +3,8 @@ $page_title = 'Yoko\'s Kitchen';
 
 $nav_cooking_class = 'active_page';
 
-// TODO: 2. initial page state (hide confirmation message)
-$show_confirmation_message = true;
+// 2. initial page state (hide confirmation message)
+$show_confirmation_message = false;
 
 // CSS classes for form feedback messages
 $feedback_css_classes = array(
@@ -27,17 +27,25 @@ $sticky_values = array(
 );
 
 // Did the user submit the form?
-if (true /* TODO: 3. Did the user submit the form? (submit button parameter exists) */) {
+if (isset($_POST["request"])) {
 
-  // TODO: 4. Assume the form is valid
-  // $form_valid = true;
+  // 4. Assume the form is valid
+  $form_valid = true;
 
   // Get HTTP request user data
-  $form_values["course-vegetarian"] = isset($_POST['japanese-vegetarian']); // untrusted
+  $form_values["course-vegetarian"] = (bool)($_POST['japanese-vegetarian']); // untrusted isset not get a warning message
   $form_values["course-sauces"] = isset($_POST['sauces-masterclass']); // untrusted
   $form_values["email"] = trim($_POST["email"]); // untrusted
 
-  // TODO: 5. Validate that at least one course checkbox was checked
+  // 5. Validate that at least one course checkbox was checked
+  if (
+    !$form_values["course-vegetarian"] &&
+    !$form_values["course-sauces"]
+  ){
+    $form_valid = false;
+    $feedback_css_classes["courses"] = "";
+  }
+
 
   // TODO: 6. Validate that the email is not empty (email is required)
   // Note: Do not validate email format.
@@ -67,15 +75,17 @@ if (true /* TODO: 3. Did the user submit the form? (submit button parameter exis
 
     <p>Welcome to Yoko's Kitchen!</p>
 
-    <!-- TODO: 1. conditional render the confirmation message using the $show_confirmation_message variable -->
+    <!-- 1. conditional render the confirmation message using the $show_confirmation_message variable -->
 
-    <section class="notice">
-      <h2>Course Information Request Confirmation</h2>
+    <?php if ($show_confirmation_message) { ?>
+      <section class="notice">
+        <h2>Course Information Request Confirmation</h2>
 
-      <p>Thank you for your interest in our cooking classes!</p>
+        <p>Thank you for your interest in our cooking classes!</p>
 
-      <p>We will send information about these courses to you shortly.</p>
-    </section>
+        <p>We will send information about these courses to you shortly.</p>
+      </section>
+    <?php } ?>
 
     <section>
       <h2>Cooking Classes</h2>
@@ -135,7 +145,10 @@ if (true /* TODO: 3. Did the user submit the form? (submit button parameter exis
         </div>
 
         <div class="align-right">
-          <input id="request-submit" type="submit" value="Request Information" />
+          <button id="request-submit" type="submit" name="request">
+            Request Information
+          </button>
+          <!-- <input id="request-submit" type="submit" value="Request Information" name="request"/>  -->
         </div>
       </form>
     </section>
